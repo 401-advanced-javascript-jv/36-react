@@ -1,24 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import * as actions from '../store/actions';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      foo:'bar'
-    }
-  }
-
-  handleChange = () => {
-    this.setState({foo:Math.random()});
-  }
 
   render() {
+    const { changer } = this.props;
     return (
-      <div onClick={this.handleChange}>
-        {this.state.foo}
+      <div onClick={changer}>
+        {this.props.stuff.foo}
       </div>
     );
   }
 }
 
-export default App;
+const mapStoreToPropsAsState = (state) => ({
+  stuff: state.someStuff,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changer: (payload) => dispatch(actions.changer(payload)),
+});
+
+export default connect(
+  mapStoreToPropsAsState,
+  mapDispatchToProps
+)(App);
